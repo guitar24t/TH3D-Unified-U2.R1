@@ -34,16 +34,16 @@
   #define THERMAL_PROTECTION_PERIOD HOTEND_THERMAL_PROTECTION_TIME
   #define THERMAL_PROTECTION_HYSTERESIS 4
 
-  #define WATCH_TEMP_PERIOD HOTEND_THERMAL_PROTECTION_TIME
+  #define WATCH_TEMP_PERIOD (HOTEND_THERMAL_PROTECTION_TIME / 2)
   #define WATCH_TEMP_INCREASE 4
 #endif
 
 #if ENABLED(THERMAL_PROTECTION_BED)
-  #define THERMAL_PROTECTION_BED_PERIOD 20    // Seconds
-  #define THERMAL_PROTECTION_BED_HYSTERESIS 2 // Degrees Celsius
+  #define THERMAL_PROTECTION_BED_PERIOD (BED_THERMAL_PROTECTION_TIME / 2)
+  #define THERMAL_PROTECTION_BED_HYSTERESIS 2
 
-  #define WATCH_BED_TEMP_PERIOD 60                // Seconds
-  #define WATCH_BED_TEMP_INCREASE 2               // Degrees Celsius
+  #define WATCH_BED_TEMP_PERIOD BED_THERMAL_PROTECTION_TIME
+  #define WATCH_BED_TEMP_INCREASE 2
 #endif
 
 #if ENABLED(EZBOARD)
@@ -51,7 +51,7 @@
   #if ENABLED(USE_CONTROLLER_FAN)
     #define CONTROLLER_FAN_PIN P1_22       // Set a custom pin for the controller fan
     #define CONTROLLERFAN_SECS 60          // Duration in seconds for the fan to run after all motors are disabled
-    #define CONTROLLERFAN_SPEED 204        // 255 == full speed
+    #define CONTROLLERFAN_SPEED 255        // 255 == full speed
   #endif
 #endif
 
@@ -392,18 +392,20 @@
 
 #define ADVANCED_PAUSE_FEATURE
 #if ENABLED(ADVANCED_PAUSE_FEATURE)
-  #define PAUSE_PARK_RETRACT_FEEDRATE         60
+  #define PAUSE_PARK_RETRACT_FEEDRATE         50
   #define PAUSE_PARK_RETRACT_LENGTH            2
-  #define FILAMENT_CHANGE_UNLOAD_FEEDRATE     10
+  #define FILAMENT_CHANGE_UNLOAD_FEEDRATE     20
   #define FILAMENT_CHANGE_UNLOAD_ACCEL        25
   #if ENABLED(DIRECT_DRIVE_PRINTER)
     #define FILAMENT_CHANGE_UNLOAD_LENGTH      20
+  #elif ENABLED(MOUNTED_FILAMENT_SENSOR)
+    #define FILAMENT_CHANGE_UNLOAD_LENGTH      0
   #else
     #define FILAMENT_CHANGE_UNLOAD_LENGTH      100
   #endif
   #define FILAMENT_CHANGE_SLOW_LOAD_FEEDRATE   6
   #define FILAMENT_CHANGE_SLOW_LOAD_LENGTH     0
-  #define FILAMENT_CHANGE_FAST_LOAD_FEEDRATE   6
+  #define FILAMENT_CHANGE_FAST_LOAD_FEEDRATE  20
   #define FILAMENT_CHANGE_FAST_LOAD_ACCEL     25
   #define FILAMENT_CHANGE_FAST_LOAD_LENGTH     0
   #define ADVANCED_PAUSE_PURGE_FEEDRATE        3
@@ -437,19 +439,11 @@
 #if HAS_TRINAMIC
 
   #define HOLD_MULTIPLIER    0.5  // Scales down the holding current from run current
-  #if ENABLED(TMC_NATIVE_256_STEPPING)
-    #define INTERPOLATE false
-  #else
-    #define INTERPOLATE true
-  #endif
+  #define INTERPOLATE true
 
   #if AXIS_IS_TMC(X)
     #define X_CURRENT      600  // (mA) RMS current. Multiply by 1.414 for peak current.
-    #if ENABLED(TMC_NATIVE_256_STEPPING)
-      #define X_MICROSTEPS 256
-    #else
-      #define X_MICROSTEPS 16
-    #endif
+    #define X_MICROSTEPS 16
     #define X_RSENSE     0.11
   #endif
 
@@ -460,12 +454,15 @@
   #endif
 
   #if AXIS_IS_TMC(Y)
-    #define Y_CURRENT     600
-    #if ENABLED(TMC_NATIVE_256_STEPPING)
-      #define Y_MICROSTEPS 256
-    #else
-      #define Y_MICROSTEPS 16
+    #if ENABLED(CR10_S5) || ENABLED(CR10S_S5)
+	  #define Y_CURRENT   800
+	#elif ENABLED(CR10_S4) || ENABLED(CR10S_S4)
+	  #define Y_CURRENT   700
+	#else
+	  #define Y_CURRENT   600
     #endif
+	
+    #define Y_MICROSTEPS 16
     #define Y_RSENSE     0.11
   #endif
 
@@ -481,11 +478,13 @@
     #else
       #define Z_CURRENT     700
     #endif
-    #if ENABLED(TMC_NATIVE_256_STEPPING)
-      #define Z_MICROSTEPS 256
+	
+    #if ENABLED(ENDER5_NEW_LEADSCREW)
+      #define Z_MICROSTEPS 8
     #else
       #define Z_MICROSTEPS 16
     #endif
+	
     #define Z_RSENSE     0.11
   #endif
 
@@ -564,6 +563,7 @@
   #else
     #define CHOPPER_TIMING CHOPPER_DEFAULT_24V
   #endif
+  
   #define MONITOR_DRIVER_STATUS
 
   #if ENABLED(MONITOR_DRIVER_STATUS)

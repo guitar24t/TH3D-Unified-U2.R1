@@ -8,7 +8,7 @@
 *
 * EZABL SETUP NOTES:
 * If you have EZABL uncomment the mount you are using with the printer.
-* If you have a custom/unsupported mount uncomment #define CUSTOM_MOUNT and enter your offsets
+* If you have a custom/unsupported mount uncomment #define CUSTOM_PROBE and enter your offsets
 * below in the CUSTOM MOUNT section. Refer to the EZABL guide to get your offsets.
 *
 * STEP 1:
@@ -47,56 +47,62 @@
 // ****************    EZBoard Lite Printer Configuration    ****************
 //===========================================================================
 
-//CR-10 Series (Single Z Motor)
+// CR-10 Series -------------------------------------------------------------
 //#define CR10
 //#define CR10_MINI
 //#define CR10_S4
 //#define CR10_S5
 
-//CR-10S Series (Dual Z Motors) - Setting a "S" model here will automatically enable the reverse Z for use with the dual Z adapter and increase the Z vref.
+// CR-10S Series ------------------------------------------------------------
 //#define CR10S
 //#define CR10S_MINI
 //#define CR10S_S4
 //#define CR10S_S5
 
-//Ender Series
+// Ender Series -------------------------------------------------------------
 //#define ENDER3
 //#define ENDER5
+//#define ENDER5_PLUS
 
-//Sovol Machines - BETA SUPPORT
+// Other Machines -----------------------------------------------------------
+#define CR20
+
+// Sovol Machines -----------------------------------------------------------
 //#define SOVOL_SV01
 
-// If you are using our EZOut Sensor connect to the FIL SENSOR header with the RED wire lined up with the "5V" marking by the header and uncomment the below line.
-//#define EZOUTV2_ENABLE
+// Filament Sensor Options --------------------------------------------------
+// If your machine came stock with a filament sensor it will be enabled automatically. If you replaced your stock sensor with our EZOut or you added an EZOut enabling the EZOUTV2_ENABLE will override the Creality sensor if your machine had one
 
-// If you are using the Stock Creality CR-10S or Sovol SV01 Sensor connect to the FIL SENSOR header with the RED wire lined up with the "5V" marking by the header and uncomment the below line.
+// If you are using our EZOut Sensor connect to the FIL SENSOR header with the RED wire lined up with the "5V" marking by the header and uncomment the below line.
+#define EZOUTV2_ENABLE
+
+// If you are using the Creality CR-10S Sensor connect to the FIL SENSOR header with the RED wire lined up with the "5V" marking by the header and uncomment the below line.
 //#define CR10S_STOCKFILAMENTSENSOR
 
-// EZABL Probe Mounts
-//#define CR10_OEM //OEM Mount for Creality Machines (Ender3/5/CR-10/CR-10S)
-//#define SV01_OEM_MOUNT //Sovol SV01 OEM Mount
-//#define CR10_VOLCANO
-//#define CR10_V6HEAVYDUTY
-//#define CR10_FANG
-//#define TM3DAERO
-//#define TM3DAERO_EXTENDED
-//#define PETSFANG //This is the RIGHT mounted version - if using the left mount please use the CUSTOM_PROBE option.
-//#define CUSTOM_PROBE
+// EZABL Probe Mounts -------------------------------------------------------
+#define CR10_OEM                 //OEM Mount for Creality Machines (Ender3/5/CR-10/CR-10S)
+//#define SV01_OEM_MOUNT           //Sovol SV01 OEM Mount
+//#define CR10_VOLCANO             //TH3D CR-10 Volcano Mount 
+//#define CR10_V6HEAVYDUTY         //V6 Heavy Duty Mount
+//#define TM3DAERO                 //TM3D Aero Mount for V6
+//#define TM3DAERO_EXTENDED        //TM3D Arto Mount for Volcano
+//#define PETSFANG                 //This is the RIGHT mounted version
+//#define CUSTOM_PROBE             //For any other probe mount (also used for BL Touch), Enter offsets below
 
-// PT100 Thermocouple Support
-// Refer to the EZBoard installation documentation for connecting the PT100 to the EZBoard Expansion Header
-//#define EZBOARD_PT100
+// Ender 5 Plus ONLY ABL Settings -------------------------------------------
+// By default the Ender 5 Plus comes with a BL Touch. Enabling the ENDER5_PLUS_EZABL or ENDER5_PLUS_NOABL will override the BL Touch setting
+// If you are using the stock BL Touch with a non-stock mount enable the CUSTOM_PROBE line above and enter the offsets below for the new mount.
+//#define ENDER5_PLUS_EZABL
+//#define ENDER5_PLUS_NOABL
 
-// If you are having issues with the EZABL not triggering when connected to the Z-Stop header you can use the
-// servo header pins. Connect the 2 wires going to the EZABL Board Z endstop side to the GND and SIG pins on the
-// servo header and uncomment the below line to switch the Z endstop over to that pin.
-// See here for details: https://www.th3dstudio.com/knowledgebase/ezabl-ezboard-not-triggering-fix/
-//#define V3_EZABL_ON_SERVO
-
-// Advanced Settings -------------------------------
+// Advanced Settings --------------------------------------------------------
+// These settings do not typically need to be adjusted except for machines that do not follow stock configs
 
 // If you are using a modded machine with a higher Z height use the below option to change the height. This value is in mm.
 //#define CUSTOM_ZHEIGHT 400
+
+// If you have the new Ender 5 or Ender 5 Pro Model that has the new leadscrew uncomment the below option to set the correct stepping mode for the Z driver
+//#define ENDER5_NEW_LEADSCREW
 
 // Dual Z Motor Settings
 // When running dual Z motors uncomment the below line. This will increase the Z motor driver current for 2x motors.
@@ -115,6 +121,15 @@
 // below line. However, if you get lost steps and inconsistent extrusion then disable this option.
 //#define STEALTHCHOP_E
 
+// Fix for Older EZABL Kits
+// If you are having issues with the EZABL not triggering when connected to the Z-Stop header you can use the servo header pins.
+// See here for details: https://www.th3dstudio.com/knowledgebase/ezabl-ezboard-not-triggering-fix/
+//#define V3_EZABL_ON_SERVO
+
+// E3D PT100 Thermocouple Support
+// Refer to the EZBoard installation documentation for connecting the PT100 to the EZBoard Expansion Header
+//#define EZBOARD_PT100
+
 //===========================================================================
 // *************************  END PRINTER SECTION   *************************
 //===========================================================================
@@ -127,23 +142,19 @@
 // Default is 3 which gives you 3x3 grid for a total of 9 points. STICK WITH ODD NUMBERS
 #define EZABL_POINTS 3
 
-// If you want to probe in on the bed more than 15mm change this below.
-// Do not use 30mm for the Standard CR-10/s or the S4 as you will be on the bed screws.
-// Try 50mm to avoid the binder clips if you use them. Do NOT go under 15mm here.
-// You can do down to 10mm on the Wanhao i3 since it cannot print on the entire bed.
-// You can do down to 5mm on the Wanhao i3 Mini since it cannot print on the entire bed.
-// (only used if EZABL enabled)
+// If you want to change how far in or out the probe senses change EZABL_PROBE_EDGE value below
+// Most Machines - 35
+// Binder Clips? - 50
 #define EZABL_PROBE_EDGE 35
 
 // If you have issues with your machine running the faster probe setting disable the #define EZABL_FASTPROBE below.
-// DO NOTE: Most machines will work with the fast probe enabled. Use M48 to verify accuracy.
-#define EZABL_FASTPROBE
+// NOTE: Most machines will work with the fast probe enabled. Use M48 to verify accuracy.
+//#define EZABL_FASTPROBE
 
-// Super fast probing - VERY EXPERIMENTAL AND ONLY TESTED WITH EZABL PRO SENSORS
-// Do NOT use with EZABL_FASTPROBE (comment out above) or BL Touch Sensors
-//#define EZABL_SUPERFASTPROBE
+// Superfast probing - Only works with the EZABL Pro Sensors
+#define EZABL_SUPERFASTPROBE
 
-// This will disable the XYE motors during probing. Can be useful if you have stepper motors causing interference issues with the EZABL sensor.
+// This will disable the XYE motors during probing. Can be useful if you have stepper motors causing interference issues with your ABL sensor.
 //#define PROBING_MOTORS_OFF
 
 // Heaters will stay on during probing - only use if directed to by support. Do not use on AC beds.
@@ -162,9 +173,6 @@
 
 // Does your machine make weird noises/vibrations when it is probing the mesh? Enable this to slow down the speed between probe points.
 //#define SLOWER_PROBE_MOVES
-
-// If you do not want to have the Zoffset combined with babystepping then uncomment the below line.
-//#define SEPARATE_BABYSTEPPING_FROM_ZOFFSET
 
 //================================================================================
 // IF YOU HAVE A CUSTOM PROBE MOUNT OR ONE THAT IS NOT PRE-SUPPORTED UNCOMMENT THE
@@ -200,7 +208,6 @@
 //===========================================================================
 
 // EXTRUDER SETTINGS -------------------------------
-
 // Use to set custom esteps and/or reverse your E Motor direction if you are installing an extruder that needs the direction reversed.
 // If you reversed the wiring on your E motor already (like the Bondtech Guide says to do) then you do not need to reverse it in the firmware here.
 
@@ -209,16 +216,23 @@
 // If you need to reverse the e motor direction also enabled the REVERSE_E_MOTOR_DIRECTION option.
 // Example EStep Values: TH3D Aluminum Extruder - 95 ESteps, TH3D Tough Extruder - 463 ESteps, BMG Extruder - 415 ESteps
 // When installing a Tough Extruder or E3D Titan or Bondtech that is Geared you likely need to enable the REVERSE_E_MOTOR_DIRECTION option
-//#define CUSTOM_ESTEPS
-//#define REVERSE_E_MOTOR_DIRECTION
+#define CUSTOM_ESTEPS
+#define REVERSE_E_MOTOR_DIRECTION
 #define CUSTOM_ESTEPS_VALUE 463
 
 // If you are using a pancake stepper enable the PANCAKE_STEPPER option to reduce the motor current to lower the stepper temperature
 //#define PANCAKE_STEPPER
 
+// FILAMENT SENSOR UNLOAD SETTINGS -----------------
+// If you have a filament sensor that is physically mounted to the machine you can enable MOUNTED_FILAMENT_SENSOR to set the unload length to 0 to prevent filament from backing up in the sensor by uncommenting MOUNTED_FILAMENT_SENSOR 
+//#define MOUNTED_FILAMENT_SENSOR
+
+// If you have a direct drive machine with a filament sensor uncomment DIRECT_DRIVE_PRINTER to decrease the unload length from 100mm to 20mm
+//#define DIRECT_DRIVE_PRINTER
+
 // THERMISTOR SETTINGS -----------------------------
 
-// If you are using an E3D V6 Hotend with their cartridge thermistor (not glass version) uncomment the below line.
+// If you are using an E3D V6 Hotend (or Hemera) with their cartridge thermistor (not glass version) uncomment the below line.
 //#define V6_HOTEND
 
 // If you are using a Tough Hotend from TH3D or any thermistors TH3D sells for your hotend uncomment the below line.
@@ -234,6 +248,13 @@
 //#define KNOWN_HOTEND_THERMISTOR
 //#define KNOWN_HOTEND_THERMISTOR_VALUE X
 
+// If you have a hotend and thermistor capable of over 290C you can set the max temp value below.
+// Setting this higher than 290C on a stock or traditional thermistor will damage it. Refer to your thermistor documentation to see what max temp is.
+//#define HIGH_TEMP_THERMISTOR
+#define HIGH_TEMP_THERMISTOR_TEMP 350
+
+// BED THERMISTOR SETTINGS -------------------------
+
 // If you are using a known bed thermistor value uncomment the below 2 lines and enter the thermistor number replacing the X after the #define KNOWN_BED_THERMISTOR_VALUE
 //#define KNOWN_BED_THERMISTOR
 //#define KNOWN_BED_THERMISTOR_VALUE X
@@ -245,8 +266,7 @@
 
 // BED SETTINGS ------------------------------------
 
-// If you want PID tuning on your bed you can enable the below line. But PID on a bed is not typically needed. By default BED PID is disabled.
-// This will be disabled when using automatic or manual mesh leveling with a 1284p board due to memory limitations.
+// If you want PID regulation on your bed you can enable the below line. But PID on a bed is not typically needed. By default BED PID is disabled.
 //#define PIDBED_ENABLE
 
 // If you are using an AC bed with a standalone controller (Keenovo) uncomment the below line to disable the heated bed in the firmware
@@ -311,15 +331,6 @@
 //#define JUNCTION_DEVIATION_DISABLE
 //#define S_CURVE_ACCELERATION_DISABLE
 
-//===========================================================================
-//************************ EXPERIMENTAL FEATURES ****************************
-//===========================================================================
-
-// If you want to run the XYZ motors in 1/256 stepping mode with no interpolation uncomment the below line.
-// This is a feature still in testing and there may be step loss or other issues with it.
-// This does not set the E motor to 1/256 stepping due to step loss on E when this was tested.
-//#define TMC_NATIVE_256_STEPPING
-
 //================================================================================================
 // Language - This is provided for convenience and is unsupported with included product support.
 // We only test compile with English language. If you run into space issues disable some features.
@@ -339,4 +350,4 @@
 
 #include "Configuration_backend.h"
 
-#define UNIFIED_VERSION "TH3D U2.R1.11"
+#define UNIFIED_VERSION "TH3D U2.R1.A4"
