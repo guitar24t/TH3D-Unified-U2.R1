@@ -62,7 +62,7 @@
 // Ender Series -------------------------------------------------------------
 //#define ENDER3
 //#define ENDER5
-//#define ENDER5_PLUS
+#define ENDER5_PLUS
 
 // Sovol Machines -----------------------------------------------------------
 //#define SOVOL_SV01
@@ -137,12 +137,12 @@
 
 // If you want more or less EZABL probe points change the number below (only used if EZABL enabled)
 // Default is 3 which gives you 3x3 grid for a total of 9 points. STICK WITH ODD NUMBERS
-#define EZABL_POINTS 3
+//#define EZABL_POINTS 3
 
 // If you want to change how far in or out the probe senses change EZABL_PROBE_EDGE value below
 // Most Machines - 35
 // Binder Clips? - 50
-#define EZABL_PROBE_EDGE 35
+//#define EZABL_PROBE_EDGE 35
 
 // If you have issues with your machine running the faster probe setting disable the #define EZABL_FASTPROBE below.
 // NOTE: Most machines will work with the fast probe enabled. Use M48 to verify accuracy.
@@ -213,9 +213,9 @@
 // If you need to reverse the e motor direction also enabled the REVERSE_E_MOTOR_DIRECTION option.
 // Example EStep Values: TH3D Aluminum Extruder - 95 ESteps, TH3D Tough Extruder - 463 ESteps, BMG Extruder - 415 ESteps
 // When installing a Tough Extruder or E3D Titan or Bondtech that is Geared you likely need to enable the REVERSE_E_MOTOR_DIRECTION option
-//#define CUSTOM_ESTEPS
+#define CUSTOM_ESTEPS
 //#define REVERSE_E_MOTOR_DIRECTION
-#define CUSTOM_ESTEPS_VALUE 463
+#define CUSTOM_ESTEPS_VALUE 93
 
 // If you are using a pancake stepper enable the PANCAKE_STEPPER option to reduce the motor current to lower the stepper temperature
 //#define PANCAKE_STEPPER

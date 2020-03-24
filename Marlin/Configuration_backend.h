@@ -295,7 +295,7 @@
 #elif ENABLED(TH3D_HOTEND_THERMISTOR)
   #define TEMP_SENSOR_0 1
 #else
-  #define TEMP_SENSOR_0 1
+  #define TEMP_SENSOR_0 5
 #endif
 
 #define TEMP_SENSOR_2 0
