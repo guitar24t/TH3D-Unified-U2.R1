@@ -295,7 +295,7 @@
 #elif ENABLED(TH3D_HOTEND_THERMISTOR)
   #define TEMP_SENSOR_0 1
 #else
-  #define TEMP_SENSOR_0 5
+  #define TEMP_SENSOR_0 1
 #endif
 
 #define TEMP_SENSOR_2 0
@@ -313,7 +313,7 @@
 #elif ENABLED(KEENOVO_TEMPSENSOR)
   #define TEMP_SENSOR_BED 11
 #else
-  #define TEMP_SENSOR_BED 5
+  #define TEMP_SENSOR_BED 1
 #endif
 
 #define TEMP_RESIDENCY_TIME     5
@@ -634,9 +634,9 @@
 #define PREHEAT_1_TEMP_BED     60
 #define PREHEAT_1_FAN_SPEED     0
 
-#define PREHEAT_2_LABEL       "ABS"
+#define PREHEAT_2_LABEL       "PETG"
 #define PREHEAT_2_TEMP_HOTEND 240
-#define PREHEAT_2_TEMP_BED    100
+#define PREHEAT_2_TEMP_BED    88
 #define PREHEAT_2_FAN_SPEED     0
 
 #define NOZZLE_PARK_FEATURE
